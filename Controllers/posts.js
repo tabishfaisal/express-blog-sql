@@ -2,29 +2,22 @@ import connection from '../data/db.js';
 
 function index(req, res) {
     const sql = `select * from posts`;
-    connection.query(sql,(err,results)=>{
-        if(err) return res.status(500).json({error:'posts not found'});
+    connection.query(sql, (err, results) => {
+        if (err) return res.status(500).json({ error: 'posts not found' });
         res.json(results);
     })
-
-
 }
-export default index;
-
-
-
-/*export const show = (req, res) => {
-    const id = parseInt(req.params.id)
-    const post = posts.find((post) => post.id === id)
-    if (post) {
-        res.status(200)
-        res.send(post)
-    } else {
-        res.status(404)
-        res.send(`post not found with id`)
-    }
-}
-
+function show(req, res) {
+    const {id} = req.params;
+    const sql = 'select * from posts where id = ?';
+    connection.query(sql, [id], (err, results) => {
+        if (err) return res.status(500).json({ error: 'Database query failed' });
+        if (results.length === 0) return res.status(404).json({ error: 'post not found' });
+        res.json(results[0]);
+        });
+};
+export { index, show};
+/*
 export const create = (req, res) => {
     const post = req.body;
     posts.push(post);

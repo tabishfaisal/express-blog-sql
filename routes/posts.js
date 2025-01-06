@@ -1,14 +1,14 @@
 import express from 'express';
 const router = express.Router();
-import index from '../Controllers/posts.js';
+import {index, show} from '../Controllers/posts.js';
 
 
 
 router.get('/',index);
 
-/*router.get('/:id',show);
+router.get('/:id',show);
 
-router.post('/',create);
+/*router.post('/',create);
 
 router.delete('/:id',destroy);
 
