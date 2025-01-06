@@ -1,10 +1,19 @@
-import posts from '../data/post.js';
+import connection from '../data/db.js';
 
-export const index = (req, res) => {
-    res.status(200);
-    res.send(posts)
+function index(req, res) {
+    const sql = `select * from posts`;
+    connection.query(sql,(err,results)=>{
+        if(err) return res.status(500).json({error:'posts not found'});
+        res.json(results);
+    })
+
+
 }
-export const show = (req, res) => {
+export default index;
+
+
+
+/*export const show = (req, res) => {
     const id = parseInt(req.params.id)
     const post = posts.find((post) => post.id === id)
     if (post) {
@@ -52,4 +61,4 @@ export const modify = (req, res) => {
         res.send(post)
     }
 
-}
+}*/
