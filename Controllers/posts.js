@@ -8,27 +8,30 @@ function index(req, res) {
     })
 }
 function show(req, res) {
-    const {id} = req.params;
+    const { id } = req.params;
     const sql = 'select * from posts where id = ?';
     connection.query(sql, [id], (err, results) => {
         if (err) return res.status(500).json({ error: 'Database query failed' });
         if (results.length === 0) return res.status(404).json({ error: 'post not found' });
         res.json(results[0]);
-        });
+    });
 };
-export { index, show};
+function destroy(req, res) {
+    const { id } = req.params;
+    const sql = 'DELETE FROM posts WHERE id = ?';
+    connection.query(sql, [id], (err) => {
+        if (err) return res.status(500).json({ error: 'Failed to delete post' });
+        res.sendStatus(204)
+    });
+}
+export { index, show, destroy };
 /*
 export const create = (req, res) => {
     const post = req.body;
     posts.push(post);
     res.status(201).send(post)
 }
-export const destroy = (req, res) => {
-    const id = parseInt(req.params.id);
-    const newposts = posts.filter((post) => post.id !== id);
-    res.status(200)
-    res.send(`post with ID : ${id} has been deleted`)
-}
+
 export const modify = (req, res) => {
     const id = parseInt(req.params.id);
     const { title, content, image, tags } = req.body;
